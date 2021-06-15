@@ -1,15 +1,14 @@
 import React from 'react'
 import classes from './Item.module.scss'
 
-export class Item extends React.Component {
-	render() {
-		const { id, name, value, like, alt, photoPath } = this.props
-        let {currency} = this.props
+export const Item = (props) => {
+		const { id, name, value, like, alt, photoPath } = props
+        let {currency} = props
 		if (currency === 'USD') {
 			currency = '$'
 		}
 		return (
-			<div onClick={() => this.props.getDataById(id)} className={classes.item}>
+			<div onClick={() => props.getDataById(id)} className={classes.item}>
 				<button className={classes.favoriteButton}>
 					{like ? (
 						<svg
@@ -54,4 +53,3 @@ export class Item extends React.Component {
 			</div>
 		)
 	}
-}

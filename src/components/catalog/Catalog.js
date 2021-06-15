@@ -1,12 +1,10 @@
-import React from 'react'
 import { Item } from '../item/Item'
 import classes from './Catalog.module.scss'
 
-export class Catalog extends React.Component {
-	render() {
+export const Catalog = (props) => {
 		return (
 			<div className={classes.catalog}>
-				{this.props.items.map((elem) => (
+				{props.items.map((elem) => (
 					<Item
 						id={elem.id}
 						key={elem.id}
@@ -16,10 +14,9 @@ export class Catalog extends React.Component {
 						like={elem.like}
 						alt={elem.picture.alt}
 						photoPath={elem.picture.path}
-						getDataById={this.props.getDataById}
+						getDataById={props.getDataById}
 					></Item>
 				))}
 			</div>
 		)
 	}
-}

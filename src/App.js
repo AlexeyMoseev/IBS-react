@@ -1,25 +1,26 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import './App.scss'
 import { Card } from './components/card/Card'
 import { Catalog } from './components/catalog/Catalog'
 import { Header } from './components/header/Header'
 
-export class App extends React.Component {
-	state = {
+export const App = () => {
+	const [state, setState] = useState({
 		item: null,
 		items: [],
 		filteredData: null,
-	}
+	})
 
-	componentDidMount() {
-		this.getData()
-	}
+	useEffect(() => {
+		getData()
+	}, [])
 
-	getData = async () => {
+	const getData = async () => {
 		try {
 			const res = await fetch('http://localhost:3006/item')
 			const data = await res.json()
-			this.setState({
+			setState({
+				...state,
 				items: data.content,
 			})
 		} catch (e) {
@@ -27,11 +28,12 @@ export class App extends React.Component {
 		}
 	}
 
-	getDataById = async (id) => {
+	const getDataById = async (id) => {
 		try {
 			const res = await fetch(`http://localhost:3006/item/${id}`)
 			const data = await res.json()
-			this.setState({
+			setState({
+				...state,
 				item: data.content,
 			})
 		} catch (e) {
@@ -39,42 +41,39 @@ export class App extends React.Component {
 		}
 	}
 
-	handleExit = () => {
-		this.setState({
+	const handleExit = () => {
+		setState({
+			...state,
 			item: null,
 		})
 	}
 
-	handleInputChange = (event) => {
+	const handleInputChange = (event) => {
 		const query = event.target.value
 
-		this.setState((prevState) => {
+		setState((prevState) => {
 			const filteredData = prevState.items.filter((element) => {
 				return element.name.toLowerCase().includes(query.toLowerCase())
 			})
 			return {
+				...state,
 				filteredData,
 			}
 		})
 	}
 
-	render() {
-		return (
-			<div className='App'>
-				<Header handleInputChange={this.handleInputChange} />
-				{!this.state.item ? (
-					this.state.filteredData ? (
-						<Catalog items={this.state.filteredData} getDataById={this.getDataById} />
-					) : (
-						<Catalog items={this.state.items} getDataById={this.getDataById} />
-					)
+	return (
+		<div className='App'>
+			<Header handleInputChange={handleInputChange} />
+			{!state.item ? (
+				state.filteredData ? (
+					<Catalog items={state.filteredData} getDataById={getDataById} />
 				) : (
-					<Card
-						handleExit={this.handleExit}
-						item={this.state.item}
-					/>
-				)}
-			</div>
-		)
-	}
+					<Catalog items={state.items} getDataById={getDataById} />
+				)
+			) : (
+				<Card handleExit={handleExit} item={state.item} />
+			)}
+		</div>
+	)
 }
