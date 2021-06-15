@@ -1,0 +1,99 @@
+.header {
+	display: flex;
+	margin: 16px 24px 24px 24px;
+
+	.searchField {
+		width: 300px;
+		display: flex;
+		text-align: center;
+		border-bottom: 2px solid transparent;
+		transition: border-color 100ms ease-out;
+		&:focus-within {
+			border-color: #e97f03;
+			.submitButton path {
+				fill: #e97f03;
+			}
+		}
+		.searchButton {
+			cursor: pointer;
+			margin-right: 11.51px;
+			border: none;
+			background: none;
+			opacity: 1;
+			transition: 0.2s;
+			&:hover {
+				animation: bounce 1s;
+			}
+			&:active {
+				opacity: 0.5;
+			}
+		}
+		.searchInput {
+			padding: 11px 0px 16px 0px;
+			border: none;
+			outline: none;
+			&::placeholder {
+				color: #323232;
+				font-size: 14px;
+				line-height: 16px;
+			}
+			&:focus::placeholder {
+				opacity: 0;
+			}
+		}
+	}
+	.accountButtons {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		flex-grow: 1;
+		border: none;
+		background: none;
+		.shoppingCart {
+			margin-right: 16px;
+		}
+		.shoppingCart,
+		.accountCircle {
+			height: 24px;
+			width: 24px;
+			cursor: pointer;
+			border: none;
+			background: none;
+			opacity: 1;
+			transition: 0.2s;
+			&:hover {
+				animation: bounce 1s;
+			}
+			&:active {
+				opacity: 0.5;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 520px) {
+	.search-field {
+		width: 200px;
+	}
+}
+
+/* Анимации */
+@keyframes bounce {
+	0%,
+	20%,
+	60%,
+	100% {
+		transform: translateY(0);
+		transform: translateY(0);
+	}
+
+	40% {
+		transform: translateY(-20px);
+		transform: translateY(-20px);
+	}
+
+	80% {
+		transform: translateY(-10px);
+		transform: translateY(-10px);
+	}
+}
