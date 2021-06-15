@@ -3,16 +3,17 @@ import classes from './Card.module.scss'
 
 export class Card extends React.Component {
 	render() {
-		const { name, description, info, details, value, like, alt, photoPath } =
-			this.props
-		let { currency } = this.props
+		const { name, description, info, details, like } =
+			this.props.item
+		const { alt, path } = this.props.item.picture
+		let { currency, value } = this.props.item.price
 		if (currency === 'USD') {
 			currency = '$'
 		}
 		return (
 			<div className={classes.card}>
 				<div className={classes.frame}>
-					<img src={`http://localhost:3006/${photoPath}`} alt={alt} />
+					<img src={`http://localhost:3006/${path}`} alt={alt} />
 				</div>
 				<span className={classes.detailedTitle}>{name}</span>
 				<p className={classes.description}>{description}</p>

@@ -71,16 +71,7 @@ export class App extends React.Component {
 				) : (
 					<Card
 						handleExit={this.handleExit}
-						key={this.state.item.id}
-						name={this.state.item.name}
-						description={this.state.item.description}
-						info={this.state.item.info}
-						details={this.state.item.details}
-						currency={this.state.item.price.currency}
-						value={this.state.item.price.value}
-						like={this.state.item.like}
-						alt={this.state.item.picture.alt}
-						photoPath={this.state.item.picture.path}
+						item={this.state.item}
 					/>
 				)}
 			</div>
