@@ -14,7 +14,7 @@ export const Catalog = (props) => {
 						like={elem.like}
 						alt={elem.picture.alt}
 						photoPath={elem.picture.path}
-						getDataById={props.getDataById}
+						routeChange={props.routeChange}
 					></Item>
 				))}
 			</div>

@@ -1,25 +1,55 @@
 import classes from './Card.module.scss'
+import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
-export const Card = (props) => {
-	const { name, description, info, details, like } = props.item
-	const { alt, path } = props.item.picture
-	let { currency, value } = props.item.price
+export const Card = ({ itemId }) => {
+	const [state, setState] = useState({
+		item: [],
+		price: [],
+		picture: [],
+	})
+
+	useEffect(() => {
+		getDataById(itemId)
+	}, [])
+
+	const getDataById = async (id) => {
+		try {
+			const res = await fetch(`http://localhost:3006/item/${id}`)
+			const data = await res.json()
+			setState({
+				item: data.content,
+				price: data.content.price,
+				picture: data.content.picture,
+			})
+		} catch (e) {
+			console.log('ERRR', e)
+		}
+	}
+
+	let currency = state.price.currency
 	if (currency === 'USD') {
 		currency = '$'
 	}
+
+	const history = useHistory()
+
 	return (
 		<div className={classes.card}>
 			<div className={classes.frame}>
-				<img src={`http://localhost:3006/${path}`} alt={alt} />
+				<img
+					src={`http://localhost:3006${state.picture.path}`}
+					alt={state.picture.alt}
+				/>
 			</div>
-			<span className={classes.detailedTitle}>{name}</span>
-			<p className={classes.description}>{description}</p>
-			<span className={classes.detailedTitle}>{details}</span>
-			<p className={classes.description}>{info}</p>
+			<span className={classes.detailedTitle}>{state.item.name}</span>
+			<p className={classes.description}>{state.item.description}</p>
+			<span className={classes.detailedTitle}>{state.item.details}</span>
+			<p className={classes.description}>{state.item.info}</p>
 			<div className={classes.purchase}>
 				<span className={classes.purchasePrice}>
 					<span>{currency}</span>
-					<span>{value}</span>
+					<span>{state.price.value}</span>
 				</span>
 				<div className={classes.wrapperCountAddToCart}>
 					<div className={classes.counter}>
@@ -49,11 +79,16 @@ export const Card = (props) => {
 					</div>
 					<button className={classes.addToCart}>Add to cart</button>
 				</div>
-				<button className={classes.exit} onClick={props.handleExit}>
+				<button
+					className={classes.exit}
+					onClick={() => {
+						history.push('/')
+					}}
+				>
 					Exit
 				</button>
 				<button className={classes.detailedFavoriteButton}>
-					{like ? (
+					{state.item.like ? (
 						<svg
 							className={classes.favorite}
 							width='24'

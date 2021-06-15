@@ -3,12 +3,14 @@ import './App.scss'
 import { Card } from './components/card/Card'
 import { Catalog } from './components/catalog/Catalog'
 import { Header } from './components/header/Header'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export const App = () => {
 	const [state, setState] = useState({
-		item: null,
 		items: [],
 		filteredData: null,
+		itemId: null
 	})
 
 	useEffect(() => {
@@ -28,26 +30,6 @@ export const App = () => {
 		}
 	}
 
-	const getDataById = async (id) => {
-		try {
-			const res = await fetch(`http://localhost:3006/item/${id}`)
-			const data = await res.json()
-			setState({
-				...state,
-				item: data.content,
-			})
-		} catch (e) {
-			console.log('ERRR', e)
-		}
-	}
-
-	const handleExit = () => {
-		setState({
-			...state,
-			item: null,
-		})
-	}
-
 	const handleInputChange = (event) => {
 		const query = event.target.value
 
@@ -62,18 +44,33 @@ export const App = () => {
 		})
 	}
 
+	const history = useHistory()
+
+	const routeChange = (id) => {
+		setState({
+			...state,
+			itemId: id,
+		})
+		let path = `card/${id}`
+		history.push(path)
+	}
+
 	return (
 		<div className='App'>
 			<Header handleInputChange={handleInputChange} />
-			{!state.item ? (
-				state.filteredData ? (
-					<Catalog items={state.filteredData} getDataById={getDataById} />
-				) : (
-					<Catalog items={state.items} getDataById={getDataById} />
-				)
-			) : (
-				<Card handleExit={handleExit} item={state.item} />
-			)}
+			<Switch>
+				<Route path='/card/:id'>
+					<Card itemId={state.itemId} />
+				</Route>
+				<Route exact path='/'>
+					{state.filteredData ? (
+						<Catalog items={state.filteredData} routeChange={routeChange} />
+					) : (
+						<Catalog items={state.items} routeChange={routeChange} />
+					)}
+				</Route>
+				<Redirect to='/' />
+			</Switch>
 		</div>
 	)
 }
