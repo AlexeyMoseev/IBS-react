@@ -1,25 +1,28 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import './App.scss'
 import { Card } from './components/card/Card'
 import { Catalog } from './components/catalog/Catalog'
 import { Header } from './components/header/Header'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-export class App extends React.Component {
-	state = {
-		item: null,
+export const App = () => {
+	const [state, setState] = useState({
 		items: [],
 		filteredData: null,
-	}
+		itemId: null
+	})
 
-	componentDidMount() {
-		this.getData()
-	}
+	useEffect(() => {
+		getData()
+	}, [])
 
-	getData = async () => {
+	const getData = async () => {
 		try {
 			const res = await fetch('http://localhost:3006/item')
 			const data = await res.json()
-			this.setState({
+			setState({
+				...state,
 				items: data.content,
 			})
 		} catch (e) {
@@ -27,54 +30,47 @@ export class App extends React.Component {
 		}
 	}
 
-	getDataById = async (id) => {
-		try {
-			const res = await fetch(`http://localhost:3006/item/${id}`)
-			const data = await res.json()
-			this.setState({
-				item: data.content,
-			})
-		} catch (e) {
-			console.log('ERRR', e)
-		}
-	}
-
-	handleExit = () => {
-		this.setState({
-			item: null,
-		})
-	}
-
-	handleInputChange = (event) => {
+	const handleInputChange = (event) => {
 		const query = event.target.value
 
-		this.setState((prevState) => {
+		setState((prevState) => {
 			const filteredData = prevState.items.filter((element) => {
 				return element.name.toLowerCase().includes(query.toLowerCase())
 			})
 			return {
+				...state,
 				filteredData,
 			}
 		})
 	}
 
-	render() {
-		return (
-			<div className='App'>
-				<Header handleInputChange={this.handleInputChange} />
-				{!this.state.item ? (
-					this.state.filteredData ? (
-						<Catalog items={this.state.filteredData} getDataById={this.getDataById} />
-					) : (
-						<Catalog items={this.state.items} getDataById={this.getDataById} />
-					)
-				) : (
-					<Card
-						handleExit={this.handleExit}
-						item={this.state.item}
-					/>
-				)}
-			</div>
-		)
+	const history = useHistory()
+
+	const routeChange = (id) => {
+		setState({
+			...state,
+			itemId: id,
+		})
+		let path = `card/${id}`
+		history.push(path)
 	}
+
+	return (
+		<div className='App'>
+			<Header handleInputChange={handleInputChange} />
+			<Switch>
+				<Route path='/card/:id'>
+					<Card itemId={state.itemId} />
+				</Route>
+				<Route exact path='/'>
+					{state.filteredData ? (
+						<Catalog items={state.filteredData} routeChange={routeChange} />
+					) : (
+						<Catalog items={state.items} routeChange={routeChange} />
+					)}
+				</Route>
+				<Redirect to='/' />
+			</Switch>
+		</div>
+	)
 }
