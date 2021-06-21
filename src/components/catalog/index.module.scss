@@ -1,0 +1,13 @@
+.catalog {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 0px 16px;
+}
+
+.link {
+	margin: 0px 8px 16px;
+	height: 272px;
+	flex: 0 0 220px;
+}

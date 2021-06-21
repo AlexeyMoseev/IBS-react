@@ -1,0 +1,43 @@
+.detailedFavoriteButton {
+	cursor: pointer;
+	height: 24px;
+	width: 24px;
+	margin: 0;
+	background: none;
+	border: none;
+	opacity: 1;
+	transition: 0.2s;
+	&:hover {
+		opacity: 0.5;
+	}
+	&:active {
+		opacity: 0.3;
+	}
+}
+
+.favoriteButton {
+	cursor: pointer;
+	height: 24px;
+	width: 24px;
+	margin: 11px 10px 39px 0px;
+	align-self: flex-end;
+	background: none;
+	border: none;
+	opacity: 1;
+	transition: 0.2s;
+	&:hover {
+		opacity: 0.5;
+	}
+	&:active {
+		opacity: 0.3;
+	}
+}
+
+@media screen and (max-width: 520px) {
+	.detailedFavoriteButton {
+		margin: 0px 24px;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
