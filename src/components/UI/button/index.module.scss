@@ -1,0 +1,55 @@
+//Миксины
+@mixin orange-button {
+	margin-right: 16px;
+	cursor: pointer;
+	height: 38px;
+	width: 160px;
+	font-size: 24px;
+	line-height: 28px;
+	align-items: center;
+	text-align: center;
+	color: #ffffff;
+	background: #e97f03;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	border-radius: 10px;
+	transition: 0.2s;
+	border: none;
+	box-shadow: -1px -1px #e99330 inset;
+	&:hover {
+		background: #e99330;
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+	}
+	&:active {
+		background: #e93f03;
+	}
+}
+//Стили
+.addToCart {
+	@include orange-button;
+}
+.exit {
+	@include orange-button;
+	background: #ff0000;
+	&:hover {
+		background: #ff2828;
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+	}
+	&:active {
+		background: #ec0000;
+	}
+}
+
+@media screen and (max-width: 520px) {
+	.addToCart {
+		flex-grow: 1;
+	}
+}
+
+@media screen and (max-width: 366px) {
+	.addToCart {
+		font-size: 18px;
+		line-height: 20px;
+	}
+}
